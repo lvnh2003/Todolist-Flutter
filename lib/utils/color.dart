@@ -11,19 +11,19 @@ class MyColors {
 Color getStatusColor(String status) {
   switch (status) {
     case "Planning":
-      return Colors.blue;
+      return statusColors[0];
     case "Pending Approval":
-      return Colors.orange;
+      return statusColors[1];
     case "Approved":
-      return Colors.green;
+      return statusColors[2];
     case "In Progress":
-      return Colors.teal;
+      return statusColors[3];
     case "Pending Review":
-      return Colors.purple;
+      return statusColors[4];
     case "On Hold":
-      return Colors.redAccent;
+      return statusColors[5];
     case "Completed":
-      return Colors.green;
+      return statusColors[6];
     default:
       return Colors.grey;
   }
@@ -53,6 +53,16 @@ const List<String> statusOptions = [
 ];
 
 const List<Color> statusColors = [
+  Color(0xFF90CAF9),
+  Color(0xFFFFE0B2),
+  Color(0xFFA5D6A7),
+  Color(0xFF80CBC4),
+  Color(0xFFCE93D8),
+  Color(0xFFFFCDD2),
+  Color(0xFFC8E6C9)
+];
+
+const List<Color> statusColorsText = [
   Colors.blue,
   Colors.orange,
   Colors.green,
@@ -61,7 +71,6 @@ const List<Color> statusColors = [
   Colors.redAccent,
   Colors.green
 ];
-
 // Danh sách các mức độ ưu tiên (Priority)
 const List<String> priorityOptions = [
   "Low",
@@ -69,8 +78,4 @@ const List<String> priorityOptions = [
   "High",
 ];
 
-const List<Color> priorityColors = [
-  Colors.blue,
-  Colors.black,
-  Colors.red
-];
+const List<Color> priorityColors = [Colors.blue, Colors.black, Colors.red];
