@@ -63,4 +63,20 @@ class MongodbDatabase{
       print(e.toString());
     }
   }
+
+  static Future<void> updateStatus(String id, String newStatus) async {
+  await userCollection.updateOne(
+    where.eq('_id', id),
+    modify.set('status', newStatus),
+  );
+}
+  static Future<void> updatePriority(String id, String newPriority) async {
+  await userCollection.updateOne(
+    where.eq('_id', id),
+    modify.set('priority', newPriority),
+  );
+  }
+  static Future<void> close() async {
+    await db.close();
+  }
 }
