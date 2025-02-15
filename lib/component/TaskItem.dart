@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:test/Model.dart';
 import 'package:test/db/mongodb.dart';
@@ -84,13 +85,25 @@ class TaskItem extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: Center(
-                    child: Text(
+                  child: Row(
+                  mainAxisSize: MainAxisSize.min, // Để Row mở rộng theo nội dung
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: data.ownerImage != null
+                          ? MemoryImage(base64Decode(data.ownerImage!))
+                          : const AssetImage('assets/default_avatar.png') as ImageProvider,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
                       data.owner,
                       textAlign: TextAlign.center,
                     ),
-                  ),
+                  ],
                 ),
+
+                ),
+
                 Expanded(
                   child: Center(
                     child: Row(

@@ -17,6 +17,7 @@ class MongoDbModel {
     DateTime dueDate;
     String owner;
     String notes;
+    final String? ownerImage;
 
     MongoDbModel({
       required this.id,
@@ -27,6 +28,7 @@ class MongoDbModel {
       required this.dueDate,
       required this.owner,
       required this.notes,
+      this.ownerImage,
     });
 
     factory MongoDbModel.fromJson(Map<String, dynamic> json) => MongoDbModel(
@@ -36,8 +38,9 @@ class MongoDbModel {
         priority: json["priority"],
         pick: json["PICK"],
         dueDate: DateTime.parse(json["due_date"]),
-        owner: json["owner"],
+        owner: json["owner"] is Map<String, dynamic> ? json["owner"]["name"] : json["owner"],
         notes: json["notes"],
+        ownerImage: json["owner"] is Map<String, dynamic> ? json["owner"]["image_base64"] : null,
     );
 
     Map<String, dynamic> toJson() => {
@@ -47,7 +50,10 @@ class MongoDbModel {
         "priority": priority,
         "PICK": pick,
         "due_date": "${dueDate.year.toString().padLeft(4, '0')}-${dueDate.month.toString().padLeft(2, '0')}-${dueDate.day.toString().padLeft(2, '0')}",
-        "owner": owner,
+        "owner": {
+          "name": owner,
+          "image_base64": ownerImage,
+        },
         "notes": notes,
     };
 }

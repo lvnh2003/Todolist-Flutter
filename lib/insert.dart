@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:test/component/CustomDropdownFormField.dart';
 import 'package:test/component/CustomTextFormField.dart';
 import 'package:test/Model.dart';
+import 'package:test/component/MyAppBar.dart';
+import 'package:test/component/OwnerSelectionDropdown.dart';
 import 'package:test/db/mongodb.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo_dart;
 import 'package:test/utils/color.dart';
@@ -19,7 +21,7 @@ class _MongoDbInsertState extends State<MongoDbInsert> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController ownerController = TextEditingController();
   final TextEditingController notesController = TextEditingController();
-
+  String? ownerImageUrl;
   String status = "Planning";
   String priority = "High";
   String pick = "Easy/ Low Value";
@@ -44,6 +46,7 @@ class _MongoDbInsertState extends State<MongoDbInsert> {
           priority = data!.priority;
           pick = data!.pick;
           dueDate = data!.dueDate;
+          ownerImageUrl = data?.ownerImage;
         });
       }
     });
@@ -103,11 +106,16 @@ class _MongoDbInsertState extends State<MongoDbInsert> {
                   onChanged: (value) => setState(() => pick = value!),
                 ),
                 const SizedBox(height: 20),
-                CustomTextFormField(
-                  controller: ownerController,
-                  labelText: "Owner",
-                  validator: (value) => value!.isEmpty ? "Enter owner" : null,
+                OwnerSelectionDropdown(
+                  initialOwner: {'name': data!.owner, 'image': ownerImageUrl},
+                  onSelected: (String ownerName, String? ownerImage) {
+                    setState(() {
+                      ownerController.text = ownerName;
+                      ownerImageUrl = ownerImage;
+                    });
+                  },
                 ),
+
                 const SizedBox(height: 20),
                 CustomTextFormField(
                   controller: notesController,
@@ -241,6 +249,7 @@ class _MongoDbInsertState extends State<MongoDbInsert> {
         ownerController.text,
         notesController.text,
         priority,
+        ownerImageUrl
       );
     }
   }
@@ -254,6 +263,7 @@ class _MongoDbInsertState extends State<MongoDbInsert> {
     String owner,
     String notes,
     String priority,
+    String? ownerImage,
   ) async {
     final updateData = MongoDbModel(
       id: id,
@@ -264,6 +274,7 @@ class _MongoDbInsertState extends State<MongoDbInsert> {
       owner: owner,
       notes: notes,
       priority: priority,
+      ownerImage: ownerImage,
     );
 
     await MongodbDatabase.update(updateData);
@@ -287,6 +298,7 @@ class _MongoDbInsertState extends State<MongoDbInsert> {
       owner: ownerController.text,
       notes: notesController.text,
       priority: priority,
+      ownerImage: ownerImageUrl,
     );
 
     await MongodbDatabase.insert(data);
@@ -307,38 +319,3 @@ class _MongoDbInsertState extends State<MongoDbInsert> {
   }
 }
 
-class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const MyAppBar({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: 150,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Icon(
-                  Icons.arrow_back_ios_new_rounded,
-                  size: 30,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  @override
-  Size get preferredSize => const Size.fromHeight(100);
-}
