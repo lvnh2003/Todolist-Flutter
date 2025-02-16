@@ -43,12 +43,12 @@ dynamic warningNoTask(BuildContext context) {
     panaraDialogType: PanaraDialogType.warning,
   );
 }
-dynamic showDetailTask(BuildContext context, MongoDbModel data) {
+dynamic showDetailTask(BuildContext context, Task data) {
   return PanaraInfoDialog.showAnimatedGrow(
     context,
     title: data.name,
     message:
-        "Status: ${data.status}\nDue Date: ${data.dueDate.toString().split(" ")[0]}\nPriority: ${data.priority}\nPick: ${data.pick}\nOwner: ${data.owner}\nNotes: ${data.notes}",
+        "Status: ${data.status}\nDue Date: ${data.dueDate.toString().split(" ")[0]}\nPriority: ${data.priority}\nOwner: ${data.owner}}",
     buttonText: "Okay",
     onTapDismiss: () {
       Navigator.pop(context);
@@ -57,7 +57,7 @@ dynamic showDetailTask(BuildContext context, MongoDbModel data) {
   );
 }
 /// Delete All Task Dialog
-dynamic deleteTask(BuildContext context, MongoDbModel data) async {
+dynamic deleteTask(BuildContext context, Task data) async {
   return PanaraConfirmDialog.show(
     context,
     title: MyString.areYouSure,

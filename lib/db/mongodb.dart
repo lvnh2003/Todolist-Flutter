@@ -22,7 +22,7 @@ class MongodbDatabase{
     return arrData;
   }
 
-  static Future<String> insert(MongoDbModel data) async{
+  static Future<String> insert(Task data) async{
     try {
       var result = await userCollection.insertOne(data.toJson());
       if(result.isSuccess){
@@ -37,7 +37,7 @@ class MongodbDatabase{
   }
 
 
- static Future<void> update(MongoDbModel data) async {
+ static Future<void> update(Task data) async {
   try {
     var response = await userCollection.updateOne(
       where.eq("_id", data.id),
@@ -45,13 +45,11 @@ class MongodbDatabase{
           .set("name", data.name)
           .set("status", data.status)
           .set("priority", data.priority)
-          .set("PICK", data.pick)
           .set("due_date", data.dueDate.toIso8601String())
           .set("owner", {
             "name": data.owner,
             "image_base64": data.ownerImage,
           })
-          .set("notes", data.notes)
     );
     inspect(response);
     } catch (e) {

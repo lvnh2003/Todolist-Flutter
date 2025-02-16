@@ -8,7 +8,7 @@ import 'package:test/utils/color.dart';
 import 'package:test/utils/const.dart';
 
 class TaskItem extends StatelessWidget {
-  final MongoDbModel data;
+  final Task data;
   final VoidCallback onUpdate;
 
   TaskItem({required this.data, required this.onUpdate});

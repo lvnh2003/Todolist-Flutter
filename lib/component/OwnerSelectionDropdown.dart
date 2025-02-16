@@ -25,11 +25,6 @@ class _OwnerSelectionDropdownState extends State<OwnerSelectionDropdown> {
   @override
   void initState() {
     super.initState();
-    // Nếu có owner ban đầu, set dữ liệu
-    if (widget.initialOwner != null) {
-      selectedOwnerName = widget.initialOwner!['name'];
-      selectedOwnerImage = widget.initialOwner!['image_base64'];
-    }
     _loadOwners();
   }
 
@@ -41,15 +36,22 @@ class _OwnerSelectionDropdownState extends State<OwnerSelectionDropdown> {
           owners = data;
           isLoading = false;
 
-          // Nếu có owner ban đầu, cập nhật ảnh đúng từ danh sách owners
-          if (selectedOwnerName != null) {
+          if (widget.initialOwner != null) {
             final existingOwner = owners.firstWhere(
-              (owner) => owner['name'] == selectedOwnerName,
+              (owner) => owner['name'] == widget.initialOwner!['name'],
               orElse: () => {},
             );
             if (existingOwner.isNotEmpty) {
+              selectedOwnerName = existingOwner['name'];
               selectedOwnerImage = existingOwner['image_base64'];
             }
+          }
+
+          // Đảm bảo selectedOwnerName luôn hợp lệ
+          if (selectedOwnerName != null &&
+              !owners.any((owner) => owner['name'] == selectedOwnerName)) {
+            selectedOwnerName = null;
+            selectedOwnerImage = null;
           }
         });
       }
@@ -77,7 +79,7 @@ class _OwnerSelectionDropdownState extends State<OwnerSelectionDropdown> {
       items: owners.map((owner) {
         String? ownerImageBase64 = owner['image_base64'];
         return DropdownMenuItem<String>(
-          value: owner['name'], // Sử dụng name làm giá trị chính
+          value: owner['name'],
           child: Row(
             children: [
               CircleAvatar(

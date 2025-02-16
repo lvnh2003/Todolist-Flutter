@@ -20,33 +20,34 @@ class MongoDbInsert extends StatefulWidget {
 class _MongoDbInsertState extends State<MongoDbInsert> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController ownerController = TextEditingController();
-  final TextEditingController notesController = TextEditingController();
   String? ownerImageUrl;
   String status = "Planning";
   String priority = "High";
-  String pick = "Easy/ Low Value";
   DateTime dueDate = DateTime.now();
 
   String _checkInsertUpdate = "Insert";
-  MongoDbModel? data;
+  Task? data;
 
   @override
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
       final args = ModalRoute.of(context)!.settings.arguments;
-      if (args != null && args is MongoDbModel) {
+      if (args != null && args is Task) {
         setState(() {
           _checkInsertUpdate = "Update";
           data = args;
           nameController.text = data!.name;
           ownerController.text = data!.owner;
-          notesController.text = data!.notes;
           status = data!.status;
           priority = data!.priority;
-          pick = data!.pick;
           dueDate = data!.dueDate;
           ownerImageUrl = data?.ownerImage;
+        });
+      } else {
+        setState(() {
+          _checkInsertUpdate = "Insert";
+          ownerImageUrl = null; // Gán mặc định khi insert
         });
       }
     });
@@ -94,32 +95,16 @@ class _MongoDbInsertState extends State<MongoDbInsert> {
                   onChanged: (value) => setState(() => priority = value!),
                 ),
                 const SizedBox(height: 20),
-                CustomDropdownFormField<String>(
-                  labelText: "PICK",
-                  value: pick,
-                  items: [
-                    "Easy/ Low Value",
-                    "Easy/ High Value",
-                    "Hard/ Low Value",
-                    "Hard/ High Value"
-                  ],
-                  onChanged: (value) => setState(() => pick = value!),
-                ),
-                const SizedBox(height: 20),
                 OwnerSelectionDropdown(
-                  initialOwner: {'name': data!.owner, 'image': ownerImageUrl},
+                  initialOwner: data != null
+                      ? {'name': data!.owner, 'image': ownerImageUrl}
+                      : {'name': '', 'image': null},
                   onSelected: (String ownerName, String? ownerImage) {
                     setState(() {
                       ownerController.text = ownerName;
                       ownerImageUrl = ownerImage;
                     });
                   },
-                ),
-
-                const SizedBox(height: 20),
-                CustomTextFormField(
-                  controller: notesController,
-                  labelText: "Notes",
                 ),
                 const SizedBox(height: 20),
                 _buildSubmitButton(),
@@ -201,7 +186,7 @@ class _MongoDbInsertState extends State<MongoDbInsert> {
       onPressed: isTaskAlreadyExistUpdateTask,
       color: MyColors.primaryColor,
       child: Text(
-        _checkInsertUpdate,
+        "💾  ${_checkInsertUpdate}",
         style: const TextStyle(
           color: Colors.white,
         ),
@@ -230,10 +215,8 @@ class _MongoDbInsertState extends State<MongoDbInsert> {
     if (_checkInsertUpdate == "Update" &&
         nameController.text == data!.name &&
         ownerController.text == data!.owner &&
-        notesController.text == data!.notes &&
         status == data!.status &&
         priority == data!.priority &&
-        pick == data!.pick &&
         dueDate == data!.dueDate) {
       return nothingEnterOnUpdateTaskMode(context);
     }
@@ -245,9 +228,7 @@ class _MongoDbInsertState extends State<MongoDbInsert> {
         nameController.text,
         status,
         dueDate,
-        pick,
         ownerController.text,
-        notesController.text,
         priority,
         ownerImageUrl
       );
@@ -259,20 +240,16 @@ class _MongoDbInsertState extends State<MongoDbInsert> {
     String name,
     String status,
     DateTime dueDate,
-    String pick,
     String owner,
-    String notes,
     String priority,
     String? ownerImage,
   ) async {
-    final updateData = MongoDbModel(
+    final updateData = Task(
       id: id,
       name: name,
       status: status,
       dueDate: dueDate,
-      pick: pick,
       owner: owner,
-      notes: notes,
       priority: priority,
       ownerImage: ownerImage,
     );
@@ -289,14 +266,12 @@ class _MongoDbInsertState extends State<MongoDbInsert> {
   Future<void> _insertData() async {
     var id = mongo_dart.ObjectId();
 
-    final data = MongoDbModel(
+    final data = Task(
       id: id.toHexString(),
       name: nameController.text,
       status: status,
       dueDate: dueDate,
-      pick: pick,
       owner: ownerController.text,
-      notes: notesController.text,
       priority: priority,
       ownerImage: ownerImageUrl,
     );
@@ -311,7 +286,6 @@ class _MongoDbInsertState extends State<MongoDbInsert> {
   void _clearFields() {
     nameController.clear();
     ownerController.clear();
-    notesController.clear();
     setState(() {
       priority = "High";
       dueDate = DateTime.now();

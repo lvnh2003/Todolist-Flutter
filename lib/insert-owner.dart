@@ -215,7 +215,10 @@ class _InsertOwnerState extends State<InsertOwner> {
           style: ElevatedButton.styleFrom(
               backgroundColor: Colors.blueAccent,
               padding:
-                  const EdgeInsets.symmetric(horizontal: 30, vertical: 15)),
+                  const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              )),
           child: const Text("📷 Choose the picture",
               style: TextStyle(fontSize: 16, color: Colors.white)),
         ),
@@ -224,8 +227,11 @@ class _InsertOwnerState extends State<InsertOwner> {
           onPressed: uploadImage,
           style: ElevatedButton.styleFrom(
               backgroundColor: Colors.green,
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 30, vertical: 15)),
+             padding:
+                  const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              )),
           child: const Text("💾 Save",
               style: TextStyle(fontSize: 16, color: Colors.white)),
         ),

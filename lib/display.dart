@@ -126,8 +126,8 @@ class _HomeState extends State<Home> {
 }
 
   Widget _buildTaskList(List data) {
-    List<MongoDbModel> dataList =
-        data.map<MongoDbModel>((json) => MongoDbModel.fromJson(json)).toList();
+    List<Task> dataList =
+        data.map<Task>((json) => Task.fromJson(json)).toList();
 
     if (dataList.isEmpty) {
       return _buildEmptyState();

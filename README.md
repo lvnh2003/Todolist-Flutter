@@ -1,16 +1,49 @@
-# test
+# Todolist Flutter
+Project allows user add task and owner in a project
 
-Todo list
+## 📌 Features
+- Add task
+- Add owner
+- Tasks and owners management
 
-## Getting Started
+## 📦 Installation
 
-This project is a starting point for a Flutter application.
+### Prerequisites
+- Flutter SDK
+- Dart
+- Android Studio / Visual Studio Code
 
-A few resources to get you started if this is your first Flutter project:
+### Steps
+1. Clone this repository:
+   ```sh
+   git clone https://github.com/lvnh2003/Todolist-Flutter.git
+   cd Todolist-Flutter
+   ```
+2. Install dependencies:
+   ```sh
+   flutter pub get
+   ```
+3. Run the app:
+   ```sh
+   flutter run
+   ```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🛠️ Technologies Used
+- Flutter
+- Dart
+- Other dependencies
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+## 🤝 Contribution
+- Fork the repository
+- Create a feature branch (`git checkout -b feature-branch`)
+- Commit changes (`git commit -m 'Add new feature'`)
+- Push to the branch (`git push origin feature-branch`)
+- Create a Pull Request
+
+## 📄 License
+Specify the project license.
+
+## 📩 Contact
+Your contact information (GitHub, Email, etc.)
+
